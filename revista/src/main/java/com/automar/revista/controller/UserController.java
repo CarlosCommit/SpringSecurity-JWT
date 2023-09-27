@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,16 +41,16 @@ public class UserController {
 		
 	}
 	
-	
-	@GetMapping("get/{id}")
 	@PreAuthorize("hasAuthority('user')")
+	@GetMapping("get/{id}")
 	public ResponseEntity<?> obtener(@PathVariable(name = "id") Long id)
 	{
 		
 		Map<String, Object> response = new HashMap<String, Object>(); 
 		response.put("Message:", "Encontrado"); 
 	    response.put("Usuario", userService.getUsuarioById(id));
-		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.FOUND);
+	    //SecurityContextHolder.clearContext();
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 		
 	  	
 	}

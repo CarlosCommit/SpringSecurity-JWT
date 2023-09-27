@@ -35,9 +35,13 @@ public class JwtFilter extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
+		if (request.getRequestURI().equals("/user/signup") || request.getRequestURI().equals("/auth/login")) {
+			filterChain.doFilter(request, response);
+        }else
+        {
 			String authorizationHeader = request.getHeader("Authorization"); 
 			String token = null; 
-		
+	
 			if(authorizationHeader!=null && authorizationHeader.startsWith("Bearer "))
 			{
 				token = authorizationHeader.substring(7); 
@@ -57,9 +61,10 @@ public class JwtFilter extends OncePerRequestFilter{
 					SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken); 
 				}
 			}
-			
+			filterChain.doFilter(request, response);
+        }
 	
-		filterChain.doFilter(request, response);
+	
 	}
 
 	public Boolean isAdmin() {

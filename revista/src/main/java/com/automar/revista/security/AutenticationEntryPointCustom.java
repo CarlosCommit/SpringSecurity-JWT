@@ -1,4 +1,4 @@
-package com.automar.revista.jwt;
+package com.automar.revista.security;
 
 import java.io.IOException;
 
@@ -10,16 +10,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@Component
-public class EntryPointJwt implements AuthenticationEntryPoint{
+public class AutenticationEntryPointCustom implements AuthenticationEntryPoint{
 
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
-		 response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Usuario no autorizado");
-		
+		   response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Acceso no autorizado. Token JWT inválido o ausente");
 	}
-
-	
-	
+	 
 }
