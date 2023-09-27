@@ -16,5 +16,12 @@ public class Mapper {
 		mapper.map(user, usuario); 
 		return usuario; 
 	}
+	public UserDTO getDtoFromUser(User user)
+	{
+		UserDTO usuarioDto = new UserDTO(); 
+		mapper.map(user, usuarioDto); 
+		usuarioDto.setRol(user.getRol().getNombre());
+		return usuarioDto; 
+	}
 }
 

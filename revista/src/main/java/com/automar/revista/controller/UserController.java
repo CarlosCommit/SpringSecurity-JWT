@@ -6,7 +6,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +28,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService; 
+
 	
-	
-	@PostMapping("/guardar")
+	@PostMapping("/signup")
 	public ResponseEntity<?> guardarUsuario(@Valid @RequestBody UserDTO user)
 	{
 		Map<String, Object> response = new HashMap<String, Object>(); 
@@ -37,14 +39,19 @@ public class UserController {
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
 		
 	}
-	@GetMapping("/obtener")
-	public ResponseEntity<?> guardarUsuario()
+	
+	
+	@GetMapping("get/{id}")
+	@PreAuthorize("hasAuthority('user')")
+	public ResponseEntity<?> obtener(@PathVariable(name = "id") Long id)
 	{
-		System.out.println("entro ");
-		Map<String, Object> response = new HashMap<>(); 
-		response.put("Message:", "Usuario"); 
-	//	response.put("Usuario", user);
-		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
 		
+		Map<String, Object> response = new HashMap<String, Object>(); 
+		response.put("Message:", "Encontrado"); 
+	    response.put("Usuario", userService.getUsuarioById(id));
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.FOUND);
+		
+	  	
 	}
+	
 }
