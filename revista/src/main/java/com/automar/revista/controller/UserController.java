@@ -41,11 +41,12 @@ public class UserController {
 		
 	}
 	
-	@PreAuthorize("hasAuthority('user')")
+
+	@PreAuthorize("hasAuthority('admin')")
 	@GetMapping("get/{id}")
 	public ResponseEntity<?> obtener(@PathVariable(name = "id") Long id)
 	{
-		
+		System.out.println("Entra");
 		Map<String, Object> response = new HashMap<String, Object>(); 
 		response.put("Message:", "Encontrado"); 
 	    response.put("Usuario", userService.getUsuarioById(id));
